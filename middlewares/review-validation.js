@@ -1,12 +1,14 @@
-import { body, param } from "express-validator";
-import { checkValidators } from "./check-validation.js";
+'use strict'
+
+import { body, param } from "express-validator"
+import { checkValidators } from "./check-validation.js"
 
 
 // ==============================
-// CREATE SUPERVISION
+// CREATE REVIEW
 // ==============================
 
-export const validateCreateSupervision = [
+export const validateCreateReview = [
 
   body('practica')
     .notEmpty()
@@ -24,7 +26,8 @@ export const validateCreateSupervision = [
     .notEmpty()
     .withMessage('El comentario es obligatorio')
     .isLength({ max: 500 })
-    .withMessage('El comentario no puede exceder 500 caracteres'),
+    .withMessage('El comentario no puede exceder 500 caracteres')
+    .trim(),
 
   body('fecha')
     .notEmpty()
@@ -33,14 +36,14 @@ export const validateCreateSupervision = [
     .withMessage('La fecha debe ser válida'),
 
   checkValidators
-];
+]
 
 
 // ==============================
-// UPDATE SUPERVISION
+// UPDATE REVIEW
 // ==============================
 
-export const validateUpdateSupervision = [
+export const validateUpdateReview = [
 
   param('id')
     .isMongoId()
@@ -67,18 +70,18 @@ export const validateUpdateSupervision = [
     .withMessage('La fecha debe ser válida'),
 
   checkValidators
-];
+]
 
 
 // ==============================
 // VALIDATE ID
 // ==============================
 
-export const validateSupervisionId = [
+export const validateReviewId = [
 
   param('id')
     .isMongoId()
     .withMessage('El ID debe ser un ObjectId válido'),
 
   checkValidators
-];
+]
