@@ -1,45 +1,33 @@
-import { Router } from "express";
+'use strict'
+
+import { Router } from 'express'
 
 import {
-  getSupervisionRecords,
-  getSupervisionById,
-  createSupervision,
-  updateSupervision,
-  deleteSupervision
-} from "./review-controller.js";
+    createReview,
+    getReviews,
+    getReviewById,
+    updateReview,
+    deleteReview
+} from '../review/review-controller.js'
 
 import {
-  validateCreateSupervision,
-  validateUpdateSupervision,
-  validateSupervisionId
-} from "../../middlewares/review-validation.js";
+    validateCreateReview,
+    validateUpdateReview,
+    validateReviewId
+} from '../../middlewares/review-validation.js'
 
-const router = Router();
+const router = Router()
 
-router.get('/', getSupervisionRecords);
 
-router.get(
-  '/:id',
-  validateSupervisionId,
-  getSupervisionById
-);
+router.get('/', getReviews)
 
-router.post(
-  '/',
-  validateCreateSupervision,
-  createSupervision
-);
+router.get('/:id', validateReviewId, getReviewById)
 
-router.put(
-  '/:id',
-  validateUpdateSupervision,
-  updateSupervision
-);
+router.post('/', validateCreateReview, createReview)
 
-router.delete(
-  '/:id',
-  validateSupervisionId,
-  deleteSupervision
-);
+router.put('/:id', validateUpdateReview, updateReview)
 
-export default router;
+router.delete('/:id', validateReviewId, deleteReview)
+
+
+export default router

@@ -3,10 +3,10 @@ import { checkValidators } from "./check-validation.js";
 
 
 // ==============================
-// CREATE SUPERVISION
+// CREATE REVIEW
 // ==============================
 
-export const validateCreateSupervision = [
+export const validateCreateReview = [
 
   body('practica')
     .notEmpty()
@@ -37,10 +37,10 @@ export const validateCreateSupervision = [
 
 
 // ==============================
-// UPDATE SUPERVISION
+// UPDATE REVIEW
 // ==============================
 
-export const validateUpdateSupervision = [
+export const validateUpdateReview = [
 
   param('id')
     .isMongoId()
@@ -74,7 +74,7 @@ export const validateUpdateSupervision = [
 // VALIDATE ID
 // ==============================
 
-export const validateSupervisionId = [
+export const validateReviewId = [
 
   param('id')
     .isMongoId()
