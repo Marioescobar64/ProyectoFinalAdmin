@@ -9,9 +9,9 @@ import {
 } from "./supervisor-controller.js";
 
 import {
-  validateCreateContact,
-  validateUpdateContact,
-  validateContactId
+  validateCreateSupervisor,
+  validateUpdateSupervisor,
+  validateSupervisorId
 } from "../../middlewares/supervisor-validation.js";
 
 const router = Router();
@@ -20,25 +20,25 @@ router.get('/', getContactRecords);
 
 router.get(
   '/:id',
-  validateContactId,
+  validateSupervisorId,
   getContactById
 );
 
 router.post(
   '/',
-  validateCreateContact,
+  validateCreateSupervisor,
   createContact
 );
 
 router.put(
   '/:id',
-  validateUpdateContact,
+  validateUpdateSupervisor,
   updateContact
 );
 
 router.delete(
   '/:id',
-  validateContactId,
+  validateSupervisorId,
   deleteContact
 );
 

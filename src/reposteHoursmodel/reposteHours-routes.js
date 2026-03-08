@@ -12,7 +12,7 @@ import {
   validateCreateProgress,
   validateUpdateProgress,
   validateProgressId
-} from "../../middlewares/reposteHour-validation.js";
+} from "../../middlewares/reposteHours-validation.js";
 
 const router = Router();
 

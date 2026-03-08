@@ -1,8 +1,8 @@
-'use strict';
+'use strict'
 
-import mongoose from 'mongoose';
+import mongoose from 'mongoose'
 
-const supervisionSchema = new mongoose.Schema({
+const reviewSchema = new mongoose.Schema({
     practica: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Practice',
@@ -10,7 +10,7 @@ const supervisionSchema = new mongoose.Schema({
     },
     supervisor: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Usuario',
+        ref: 'User',
         required: [true, 'El supervisor es obligatorio']
     },
     comentario: {
@@ -25,11 +25,6 @@ const supervisionSchema = new mongoose.Schema({
     }
 }, {
     timestamps: true
-});
+})
 
-supervisionSchema.index({ practica: 1 });
-supervisionSchema.index({ supervisor: 1 });
-supervisionSchema.index({ fecha: 1 });
-supervisionSchema.index({ practica: 1, supervisor: 1 });
-
-export default mongoose.model('Supervision', supervisionSchema);
+export default mongoose.model('Review', reviewSchema)
