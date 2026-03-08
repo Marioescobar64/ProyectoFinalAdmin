@@ -10,7 +10,7 @@ const reviewSchema = new mongoose.Schema({
     },
     supervisor: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'Usuario',
         required: [true, 'El supervisor es obligatorio']
     },
     comentario: {
