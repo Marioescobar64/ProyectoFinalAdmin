@@ -1,181 +1,182 @@
-'use strict'
-
-import Review from './reviewmodel.js'
-
-
-// ==============================
-// CREATE REVIEW
-// ==============================
-
-export const createReview = async (req, res) => {
-
-    try {
-
-        const data = req.body
-
-        const review = new Review(data)
-
-        await review.save()
-
-        return res.status(201).json({
-            success: true,
-            message: 'Review creada correctamente',
-            review
-        })
-
-    } catch (error) {
-
-        return res.status(500).json({
-            success: false,
-            message: 'Error al crear la review',
-            error
-        })
-
-    }
-
-}
-
-
-// ==============================
-// GET ALL REVIEWS
-// ==============================
+import Review from './reviewmodel.js';
 
 export const getReviews = async (req, res) => {
+  try {
 
-    try {
+    const {
+      page = 1,
+      limit = 10,
+      practica,
+      supervisor
+    } = req.query;
 
-        const reviews = await Review.find()
-            .populate('practica')
-            .populate('supervisor')
+    const filter = {};
 
-        return res.json({
-            success: true,
-            reviews
-        })
-
-    } catch (error) {
-
-        return res.status(500).json({
-            success: false,
-            message: 'Error al obtener reviews'
-        })
-
+    if (practica) {
+      filter.practica = practica;
     }
 
-}
+    if (supervisor) {
+      filter.supervisor = supervisor;
+    }
 
+    const reviews = await Review.find(filter)
+      .populate('practica')
+      .populate('supervisor')
+      .limit(limit * 1)
+      .skip((page - 1) * limit)
+      .sort({ createdAt: -1 });
 
-// ==============================
-// GET REVIEW BY ID
-// ==============================
+    const total = await Review.countDocuments(filter);
+
+    res.status(200).json({
+      success: true,
+      data: reviews,
+      pagination: {
+        currentPage: Number(page),
+        totalPages: Math.ceil(total / limit),
+        totalRecords: total,
+        limit: Number(limit)
+      }
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      success: false,
+      message: 'Error getting reviews',
+      error: error.message
+    });
+
+  }
+};
+
 
 export const getReviewById = async (req, res) => {
+  try {
 
-    try {
+    const { id } = req.params;
 
-        const { id } = req.params
+    const review = await Review.findById(id)
+      .populate('practica')
+      .populate('supervisor');
 
-        const review = await Review.findById(id)
-            .populate('practica')
-            .populate('supervisor')
-
-        if (!review) {
-            return res.status(404).json({
-                success: false,
-                message: 'Review no encontrada'
-            })
-        }
-
-        return res.json({
-            success: true,
-            review
-        })
-
-    } catch (error) {
-
-        return res.status(500).json({
-            success: false,
-            message: 'Error al obtener review'
-        })
-
+    if (!review) {
+      return res.status(404).json({
+        success: false,
+        message: 'Review not found'
+      });
     }
 
-}
+    res.status(200).json({
+      success: true,
+      data: review
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      success: false,
+      message: 'Error getting review',
+      error: error.message
+    });
+
+  }
+};
 
 
-// ==============================
-// UPDATE REVIEW
-// ==============================
+export const createReview = async (req, res) => {
+  try {
+
+    const data = req.body;
+
+    const review = new Review(data);
+
+    await review.save();
+
+    res.status(201).json({
+      success: true,
+      message: 'Review created successfully',
+      data: review
+    });
+
+  } catch (error) {
+
+    res.status(400).json({
+      success: false,
+      message: 'Error creating review',
+      error: error.message
+    });
+
+  }
+};
+
 
 export const updateReview = async (req, res) => {
+  try {
 
-    try {
+    const { id } = req.params;
 
-        const { id } = req.params
-        const data = req.body
+    const review = await Review.findByIdAndUpdate(
+      id,
+      req.body,
+      {
+        new: true,
+        runValidators: true
+      }
+    );
 
-        const review = await Review.findByIdAndUpdate(
-            id,
-            data,
-            { new: true }
-        )
-
-        if (!review) {
-            return res.status(404).json({
-                success: false,
-                message: 'Review no encontrada'
-            })
-        }
-
-        return res.json({
-            success: true,
-            message: 'Review actualizada',
-            review
-        })
-
-    } catch (error) {
-
-        return res.status(500).json({
-            success: false,
-            message: 'Error al actualizar review'
-        })
-
+    if (!review) {
+      return res.status(404).json({
+        success: false,
+        message: 'Review not found'
+      });
     }
 
-}
+    res.status(200).json({
+      success: true,
+      message: 'Review updated successfully',
+      data: review
+    });
 
+  } catch (error) {
 
-// ==============================
-// DELETE REVIEW
-// ==============================
+    res.status(400).json({
+      success: false,
+      message: 'Error updating review',
+      error: error.message
+    });
+
+  }
+};
+
 
 export const deleteReview = async (req, res) => {
+  try {
 
-    try {
+    const { id } = req.params;
 
-        const { id } = req.params
+    const review = await Review.findByIdAndDelete(id);
 
-        const review = await Review.findByIdAndDelete(id)
-
-        if (!review) {
-            return res.status(404).json({
-                success: false,
-                message: 'Review no encontrada'
-            })
-        }
-
-        return res.json({
-            success: true,
-            message: 'Review eliminada'
-        })
-
-    } catch (error) {
-
-        return res.status(500).json({
-            success: false,
-            message: 'Error al eliminar review'
-        })
-
+    if (!review) {
+      return res.status(404).json({
+        success: false,
+        message: 'Review not found'
+      });
     }
 
-}
+    res.status(200).json({
+      success: true,
+      message: 'Review deleted successfully'
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      success: false,
+      message: 'Error deleting review',
+      error: error.message
+    });
+
+  }
+};
