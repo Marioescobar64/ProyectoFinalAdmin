@@ -1,183 +1,212 @@
-import Supervision from './reviewmodel.js';
+'use strict'
 
-export const getSupervisionRecords = async (req, res) => {
+import Review from './reviewmodel.js'
+
+
+// ==============================
+// GET ALL REVIEWS
+// ==============================
+
+export const getReviews = async (req, res) => {
   try {
 
-    const {
-      page = 1,
-      limit = 10,
-      practica,
-      supervisor
-    } = req.query;
+    const { page = 1, limit = 10, practica, supervisor, fecha } = req.query
 
-    const filter = {};
+    const filter = {}
 
     if (practica) {
-      filter.practica = practica;
+      filter.practica = practica
     }
 
     if (supervisor) {
-      filter.supervisor = supervisor;
+      filter.supervisor = supervisor
     }
 
-    const supervisions = await Supervision.find(filter)
+    if (fecha) {
+      filter.fecha = fecha
+    }
+
+    const reviews = await Review.find(filter)
       .populate('practica')
       .populate('supervisor')
       .limit(limit * 1)
       .skip((page - 1) * limit)
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 })
 
-    const total = await Supervision.countDocuments(filter);
+    const total = await Review.countDocuments(filter)
 
     res.status(200).json({
       success: true,
-      data: supervisions,
+      data: reviews,
       pagination: {
         currentPage: Number(page),
         totalPages: Math.ceil(total / limit),
         totalRecords: total,
         limit: Number(limit)
       }
-    });
+    })
 
   } catch (error) {
 
     res.status(500).json({
       success: false,
-      message: 'Error getting supervision records',
+      message: 'Error getting reviews',
       error: error.message
-    });
+    })
 
   }
-};
+}
 
 
-export const getSupervisionById = async (req, res) => {
+// ==============================
+// GET REVIEW BY ID
+// ==============================
+
+export const getReviewById = async (req, res) => {
+
   try {
 
-    const { id } = req.params;
+    const { id } = req.params
 
-    const supervision = await Supervision
-      .findById(id)
+    const review = await Review.findById(id)
       .populate('practica')
-      .populate('supervisor');
+      .populate('supervisor')
 
-    if (!supervision) {
+    if (!review) {
       return res.status(404).json({
         success: false,
-        message: 'Supervision record not found'
-      });
+        message: 'Review not found'
+      })
     }
 
     res.status(200).json({
       success: true,
-      data: supervision
-    });
+      data: review
+    })
 
   } catch (error) {
 
     res.status(500).json({
       success: false,
-      message: 'Error getting supervision record',
+      message: 'Error getting review',
       error: error.message
-    });
+    })
 
   }
-};
+
+}
 
 
-export const createSupervision = async (req, res) => {
+// ==============================
+// CREATE REVIEW
+// ==============================
+
+export const createReview = async (req, res) => {
+
   try {
 
-    const data = req.body;
+    const data = req.body
 
-    const supervision = new Supervision(data);
+    const review = new Review(data)
 
-    await supervision.save();
+    await review.save()
 
     res.status(201).json({
       success: true,
-      message: 'Supervision created successfully',
-      data: supervision
-    });
+      message: 'Review created successfully',
+      data: review
+    })
 
   } catch (error) {
 
     res.status(400).json({
       success: false,
-      message: 'Error creating supervision',
+      message: 'Error creating review',
       error: error.message
-    });
+    })
 
   }
-};
+
+}
 
 
-export const updateSupervision = async (req, res) => {
+// ==============================
+// UPDATE REVIEW
+// ==============================
+
+export const updateReview = async (req, res) => {
+
   try {
 
-    const { id } = req.params;
+    const { id } = req.params
 
-    const supervision = await Supervision.findByIdAndUpdate(
+    const review = await Review.findByIdAndUpdate(
       id,
       req.body,
       {
         new: true,
         runValidators: true
       }
-    );
+    )
 
-    if (!supervision) {
+    if (!review) {
       return res.status(404).json({
         success: false,
-        message: 'Supervision record not found'
-      });
+        message: 'Review not found'
+      })
     }
 
     res.status(200).json({
       success: true,
-      message: 'Supervision updated successfully',
-      data: supervision
-    });
+      message: 'Review updated successfully',
+      data: review
+    })
 
   } catch (error) {
 
     res.status(400).json({
       success: false,
-      message: 'Error updating supervision',
+      message: 'Error updating review',
       error: error.message
-    });
+    })
 
   }
-};
+
+}
 
 
-export const deleteSupervision = async (req, res) => {
+// ==============================
+// DELETE REVIEW
+// ==============================
+
+export const deleteReview = async (req, res) => {
+
   try {
 
-    const { id } = req.params;
+    const { id } = req.params
 
-    const supervision = await Supervision.findByIdAndDelete(id);
+    const review = await Review.findByIdAndDelete(id)
 
-    if (!supervision) {
+    if (!review) {
       return res.status(404).json({
         success: false,
-        message: 'Supervision record not found'
-      });
+        message: 'Review not found'
+      })
     }
 
     res.status(200).json({
       success: true,
-      message: 'Supervision deleted successfully'
-    });
+      message: 'Review deleted successfully'
+    })
 
   } catch (error) {
 
     res.status(500).json({
       success: false,
-      message: 'Error deleting supervision',
+      message: 'Error deleting review',
       error: error.message
-    });
+    })
 
   }
-};
+
+}

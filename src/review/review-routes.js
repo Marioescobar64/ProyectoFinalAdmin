@@ -1,45 +1,45 @@
 import { Router } from "express";
 
 import {
-  getSupervisionRecords,
-  getSupervisionById,
-  createSupervision,
-  updateSupervision,
-  deleteSupervision
+  getReviews,
+  getReviewById,
+  createReview,
+  updateReview,
+  deleteReview
 } from "./review-controller.js";
 
 import {
-  validateCreateSupervision,
-  validateUpdateSupervision,
-  validateSupervisionId
+  validateCreateReview,
+  validateUpdateReview,
+  validateReviewId
 } from "../../middlewares/review-validation.js";
 
 const router = Router();
 
-router.get('/', getSupervisionRecords);
+router.get('/', getReviews);
 
 router.get(
   '/:id',
-  validateSupervisionId,
-  getSupervisionById
+  validateReviewId,
+  getReviewById
 );
 
 router.post(
   '/',
-  validateCreateSupervision,
-  createSupervision
+  validateCreateReview,
+  createReview
 );
 
 router.put(
   '/:id',
-  validateUpdateSupervision,
-  updateSupervision
+  validateUpdateReview,
+  updateReview
 );
 
 router.delete(
   '/:id',
-  validateSupervisionId,
-  deleteSupervision
+  validateReviewId,
+  deleteReview
 );
 
 export default router;
