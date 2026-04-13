@@ -1,23 +1,58 @@
+import {
+  Building2,
+  FileText,
+  School,
+  ClipboardList,
+  Clock,
+  User,
+  Users,
+  ShieldCheck
+} from "lucide-react";
+
 export const Sidebar = () => {
   const items = [
-    { label: "Canchas" },
-    { label: "Reservaciones" },
-    { label: "Equipos" },
-    { label: "Torneos" },
-    { label: "Usuarios" },
+    { label: "Robare los necesarios para salvar esta compañia", icon: Building2 },
+    { label: "evidecia", icon: FileText },
+    { label: "instituto", icon: School },
+    { label: "practica", icon: ClipboardList },
+    { label: "Preporte de horas", icon: Clock },
+    { label: "estudiante", icon: User },
+    { label: "supervisor", icon: ShieldCheck },
+    { label: "Usuario", icon: Users },
   ];
+
   return (
-    <aside className="w-60 bg-white min-h-[calc(100vh-4rem)] p-4 shadow-sm">
-      <ul className="space-y-1">
-        {items.map((item) => (
-          <li key={item.label}>
-            <div className="block px-4 py-2 rounded-lg font-medium text-gray-700 hover:bg-gray-100 cursor-pointer transition-colors">
-              {item.label}
-            </div>
-          </li>
-        ))}
+    <aside className="w-60 min-h-[calc(100vh-4rem)] p-4 
+                     bg-[#041F3D]/95 backdrop-blur-md 
+                     border-r border-[#18A7A1]/20">
+
+      <ul className="space-y-2">
+        {items.map((item) => {
+          const Icon = item.icon;
+
+          return (
+            <li key={item.label}>
+              <div className="
+                flex items-center gap-3
+                px-4 py-2 rounded-lg font-medium cursor-pointer
+                text-[#E6E6E6] 
+                hover:bg-[#0B3A66] 
+                hover:text-[#18A7A1]
+                transition-all duration-200
+              ">
+                {/* 🔥 ICONO */}
+                <Icon size={18} />
+
+                {/* TEXTO */}
+                <span className="capitalize">
+                  {item.label}
+                </span>
+              </div>
+            </li>
+          );
+        })}
       </ul>
+
     </aside>
   );
 };
- 
