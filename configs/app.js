@@ -20,6 +20,7 @@ import reviewRoutes from '../src/review/review-routes.js';
 import studentRoutes from '../src/student/student-routes.js'; 
 import supervisorRoutes from '../src/supervisor/supervisor-routes.js';
 import userRoutes from '../src/user/user-routes.js';
+import taskRoutes from '../src/task/task-router.js';
 
 // Configuracion de los middlewares (la aplicacion)
 const middlewares = (app) => {
@@ -45,6 +46,7 @@ const routes =(app) => {
     app.use(`${BASE_URL}/student`, studentRoutes);
     app.use(`${BASE_URL}/supervisor`, supervisorRoutes);
     app.use(`${BASE_URL}/user`, userRoutes);
+    app.use(`${BASE_URL}/task`, taskRoutes);
 }
     
 
