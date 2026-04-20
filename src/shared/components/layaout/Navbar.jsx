@@ -50,6 +50,7 @@ export const Navbar = () => {
           </button>
 
           {/* Avatar minimal */}
+           {/*Hola */}
           <div className="
             w-9 h-9 rounded-full
             bg-gradient-to-br from-[#18A7A1] to-[#0B3A66]
