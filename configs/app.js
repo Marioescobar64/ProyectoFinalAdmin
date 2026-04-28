@@ -9,7 +9,7 @@ import { dbConnection } from './db.js';
 
 // Rutas
 
-const BASE_URL = '/GIPS/v1';
+const BASE_URL = '/KinalPrax/v1';
 
 import companyRoutes from '../src/company/company-routes.js';
 import evidenceRoutes from '../src/evidence/evidence-routes.js';
@@ -69,7 +69,7 @@ const initServer = async (app) => {
             res.status(200).json(
                 {
                     status: 'ok',
-                    service: 'GIPS',
+                    service: 'KinalPrax',
                     version: '1.0.0'
                 }
             );
